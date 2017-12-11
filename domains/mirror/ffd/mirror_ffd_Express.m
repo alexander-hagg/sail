@@ -32,14 +32,14 @@ if ~precomputed
                 -0.05 -1.25  0.85;  0.65 -1.25  0.85;  0.65 0.30  0.85;  -0.05 0.30  0.85];
             
     % Rotate mesh to align with bounding box
-    theta = atan((0.88-0.45)/1.28);
-    rotMat = [cos(theta) -sin(theta) 0; sin(theta) cos(theta) 0; 0 0 1];
-    STLMeshpoints = STLMeshpoints * rotMat;
+    theta           = atan((0.88-0.45)/1.28);
+    rotMat          = [cos(theta) -sin(theta) 0; sin(theta) cos(theta) 0; 0 0 1];
+    STLMeshpoints   = STLMeshpoints * rotMat;
     
     % Select mesh points within bounding box
-    submesh = STLMeshpoints(:,1) > min(vertices(:,1)) & STLMeshpoints(:,1) < max(vertices(:,1)) & ...
-         STLMeshpoints(:,2) > min(vertices(:,2)) & STLMeshpoints(:,2) < max(vertices(:,2)) & ...
-         STLMeshpoints(:,3) > min(vertices(:,3)) & STLMeshpoints(:,3) < max(vertices(:,3));
+    submesh =   STLMeshpoints(:,1) > min(vertices(:,1)) & STLMeshpoints(:,1) < max(vertices(:,1)) & ...
+                STLMeshpoints(:,2) > min(vertices(:,2)) & STLMeshpoints(:,2) < max(vertices(:,2)) & ...
+                STLMeshpoints(:,3) > min(vertices(:,3)) & STLMeshpoints(:,3) < max(vertices(:,3));
     meshPoints = STLMeshpoints(submesh,:);
     nMeshPoints = size(meshPoints,1);  
     
@@ -49,44 +49,42 @@ if ~precomputed
     maxMeshPoint = max(meshPoints);
     meshPoints = (meshPoints - repmat(minMeshPoint,size(meshPoints,1),1))./(maxMeshPoint-minMeshPoint);
     
-    
     % Direction of each active control point in each dimension
     nDimX = 3; nDimY = 3; nDimZ = 3;
     
     x = zeros([nDimY,nDimZ,nDimX]);
-    xfrontWeights = [0,  -1,  -1
+    xBackWeights = [ 0,  -1,  -1
                      0,   0,  -1
                      0,  -1,  -1];
-    x(:,:,1) = fliplr(xfrontWeights);
-    x(:,:,2) = fliplr(xfrontWeights);
+    x(:,:,1) = fliplr(xBackWeights);
+    x(:,:,2) = fliplr(xBackWeights);
     y = x;
-    y(:,:,3) = fliplr(xfrontWeights);
+    y(:,:,3) = fliplr(xBackWeights);
     z = y;
+    x(2,2,1) = -1; % Make sure the center of the back of the mirror can be moved in x direction
     
     allDefs = cat(4,x,y,z);
     
     % Indexes of active dimensions
-    % HINT: ffdDofROW contains the vectorized IDs of all active DoFs and can be
-    %       used to populate defValKey in the next step
-    [ffdDofROW,~,ffdDof] = find(allDefs(:)~=0);    
+    ffdDof = find(allDefs(:)~=0);    
     
     % Map the _parameters_ to the _degrees of freedom_ (3 per control point)
     % Without constraints (like symmetry), it is just a 1:1 mapping
-    % HINT: use ffdDofROW to see what DoFs are actually used
     % HINT: 1:1 mapping:      defValKey = 1:length(deformVals);
-
-    %defValKey = [1 28 55, ]
+    defValKey = 1:length(deformVals);
+    
     % HINT: you can also use the following visualization to see what DoF is
     % where
-    IDs = 1:length(allDefs(:));
-    controlPtsX = 0:1/(nDimX-1):1;controlPtsY = 0:1/(nDimY-1):1;controlPtsZ = 0:1/(nDimZ-1):1;
-    controlPts = combvec(controlPtsX,controlPtsY,controlPtsZ);
-    figure(99);hold off;scatter3(controlPts(1,:),controlPts(2,:),controlPts(3,:),128,'filled');hold on;
-    scatter3(meshPoints(:,1),meshPoints(:,2),meshPoints(:,3),16,'r');
-    for w=1:length(allDefs(:))
-        i = mod(w,27);if i == 0; i = 27;end;
-        text(controlPts(1,i)+0.05*round(1+w/27),controlPts(2,i),controlPts(3,i),[string(IDs(w)) ':' string(allDefs(w))]);
-    end
+    %     IDs = 1:length(allDefs(:));
+    %     controlPtsX = 0:1/(nDimX-1):1;controlPtsY = 0:1/(nDimY-1):1;controlPtsZ = 0:1/(nDimZ-1):1;
+    %     controlPts = combvec(controlPtsY,controlPtsZ,controlPtsX);
+    %     controlPts = [controlPts(3,:);controlPts(2,:);controlPts(1,:)]
+    %     figure(99);hold off;scatter3(controlPts(1,:),controlPts(2,:),controlPts(3,:),128,'filled');hold on;
+    %     scatter3(meshPoints(:,1),meshPoints(:,2),meshPoints(:,3),16,'r');
+    %     for w=1:length(allDefs(:))
+    %         i = mod(w,27);if i == 0; i = 27;end;
+    %         text(controlPts(1,i)+0.05*round(1+w/27),controlPts(2,i),controlPts(3,i),[string(IDs(w)) ':' string(allDefs(w))]);
+    %     end
     %% Compute Bernstein polynomials
     % These won't change if we keep deforming the same shape, so we can
     % save the results and skip all the computation in later runs.

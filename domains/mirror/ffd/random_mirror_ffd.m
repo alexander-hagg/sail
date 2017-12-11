@@ -1,4 +1,4 @@
-[FV, validity, ffdP] = mirror_ffd_Express(0.5 + 0.1*randn(1,40), 'mirrorBase.stl');
+[FV, validity, ffdP] = mirror_ffd_Express(0.5 + 0.2*randn(1,41), 'mirrorBase.stl');
 
 controlPtsX = 0:1/(ffdP.nDimX-1):1;
 controlPtsY = 0:1/(ffdP.nDimY-1):1;

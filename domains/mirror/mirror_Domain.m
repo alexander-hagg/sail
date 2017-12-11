@@ -43,7 +43,7 @@ d.validate          = [d.name '_Validate'];
 
 % - Genotype to Phenotype Expression
 % Any representation should produce a fv struct and NX3 meshpoints
-d.dof = 70;
+d.dof = 41;
 base = 0.5+zeros(1,d.dof);
 switch encoding
     case 'ffd'
