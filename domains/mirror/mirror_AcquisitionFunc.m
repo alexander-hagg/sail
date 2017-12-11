@@ -1,7 +1,7 @@
 function [fitness,predValue] = mirror_AcquisitionFunc(drag,d)
-%velo_AcquisitionFunc - Infill criteria based on uncertainty and fitness
+%mirror_AcquisitionFunc - Infill criteria based on uncertainty and fitness
 %
-% Syntax:  [fitness, dragForce] = velo_AcquisitionFunc(drag,d)
+% Syntax:  [fitness, dragForce] = mirror_AcquisitionFunc(drag,d)
 %
 % Inputs:
 %   drag -    [2XN]    - dragForce mean and variance

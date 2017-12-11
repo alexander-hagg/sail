@@ -1,5 +1,5 @@
 function dragF = mirror_OpenFoamResult(x, stlFileName,openFoamFolder)
-%velo_openFoamResult - Evaluates a single shape in OpenFOAM
+%mirror_openFoamResult - Evaluates a single shape in OpenFOAM
 %
 % Syntax:  [observation, value] = af_InitialSamples(p)
 %

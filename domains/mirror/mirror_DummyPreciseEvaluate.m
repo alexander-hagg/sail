@@ -1,5 +1,5 @@
 function [value] = mirror_DummyPreciseEvaluate(nextObservations, d)
-%velo_DummyPreciseEvaluate - Dummy PE for testing other parts of SAIL
+%mirror_DummyPreciseEvaluate - Dummy PE for testing other parts of SAIL
 %
 % Syntax:  [observation, value] = af_InitialSamples(p)
 %
@@ -11,7 +11,7 @@ function [value] = mirror_DummyPreciseEvaluate(nextObservations, d)
 % Outputs:
 %    value(:,1)  - [nObservations X 1] drag force
 %
-% Other m-files required: velo_openFoamResult
+% Other m-files required: mirror_openFoamResult
 
 % Author: Adam Gaier
 % Bonn-Rhein-Sieg University of Applied Sciences (BRSU)

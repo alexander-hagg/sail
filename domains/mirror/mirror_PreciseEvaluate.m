@@ -1,5 +1,5 @@
 function [value] = mirror_PreciseEvaluate(nextObservations, d)
-%velo_PreciseEvaluate - Send velomobile shapes in parallel to OpenFOAM func
+%mirror_PreciseEvaluate - Send mirror shapes in parallel to OpenFOAM func
 %
 % Syntax:  [observation, value] = af_InitialSamples(p)
 %
@@ -11,7 +11,7 @@ function [value] = mirror_PreciseEvaluate(nextObservations, d)
 % Outputs:
 %    value(:,1)  - [nObservations X 1] drag force
 %
-% Other m-files required: velo_openFoamResult
+% Other m-files required: mirror_openFoamResult
 
 % Author: Adam Gaier
 % Bonn-Rhein-Sieg University of Applied Sciences (BRSU)
@@ -35,7 +35,7 @@ for iRound=0:nRounds-1
         obsIndx = iRound*nCases+iCase;          
         if obsIndx <= nObs
             openFoamFolder = [folderBaseName 'case' int2str(iCase+caseStart-1) '/']
-            PEValue(iCase) = velo_OpenFoamResult(...
+            PEValue(iCase) = mirror_OpenFoamResult(...
                d.express(nextObservations(obsIndx,:)),...
                [openFoamFolder 'constant/triSurface/parsecWing.stl'],...
                openFoamFolder);

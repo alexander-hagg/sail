@@ -1,7 +1,7 @@
 function [acqFunction] = mirror_CreateAcqFunc(gpModel, d)
-%velo_CreateAcqFunc - Packages GP models into easily used acquisition function
+%mirror_CreateAcqFunc - Packages GP models into easily used acquisition function
 %
-% Syntax:  acqFunction = velo_CreateAcqFunction, gpModel, d);
+% Syntax:  acqFunction = mirror_CreateAcqFunction, gpModel, d);
 %
 % Inputs:
 %    gpModel - cell - one or more gaussian process models
@@ -19,7 +19,7 @@ function [acqFunction] = mirror_CreateAcqFunc(gpModel, d)
 
 %------------- BEGIN CODE --------------
 
-acqFunction = @(x) velo_AcquisitionFunc(...
+acqFunction = @(x) mirror_AcquisitionFunc(...
                         predictGP(gpModel{1},x),... % Drag Force Model
                         d);                         % Hyperparams and base
 
