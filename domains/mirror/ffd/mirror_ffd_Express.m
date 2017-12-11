@@ -12,7 +12,7 @@ function [FV, validity, ffdP] = mirror_ffd_Express(deformVals, base)
 %-
 validity = true; % Do we really need to check anything?
 
-%deformVals = (deformVals*2)-1;
+deformVals = (deformVals*2)-1;
 nDeforms = size(deformVals,1);
 if ischar(base);    precomputed = false; fname= base;
 else;               precomputed = true;  ffdP = base;
@@ -22,40 +22,10 @@ end
 if ~precomputed
     rawStl = stlread(fname);
     [STLMeshpoints,faces] = patchslim(rawStl.vertices, rawStl.faces);
+   
     % Normalize mesh points
     [STLMeshpoints,normalizationFactors] = mapminmax(STLMeshpoints',-1,1);
     STLMeshpoints = STLMeshpoints';
-    
-    % Map the parameters to the degrees of freedom (3 per control point)
-    % Without constraints (like symmetry), it is just a 1:1 mapping
-    defValKey = 1:length(deformVals);
-    
-    % Direction of each active control point in each dimension
-    nDimX = 3; nDimY = 4; nDimZ = 4;
-    
-    x = zeros([nDimY,nDimZ,nDimX]);
-    %xfrontWeights = [0,  -1,  -1, -1
-    %                 0,  -1,  -1, -1
-    %                 0,  -1,  -1, -1
-    %                 0,  -1,  -1, -1];
-    xfrontWeights = [0,  -1,  -1, -1
-                     0,  -1,   0, -1
-                     0,  -1,   0, -1
-                     0,  -1,  -1, -1];
-    x(:,:,1) = fliplr(xfrontWeights);
-    y = x;
-    y(:,:,2) = fliplr(xfrontWeights);
-    y(:,:,3) = fliplr(xfrontWeights);
-    z = y;
-    
-    allDefs = cat(4,x,y,z);
-    
-    % Indexes of active dimensions
-    ffdDof = find(allDefs(:)~=0);
-    
-    %% Compute Bernstein polynomials
-    % These won't change if we keep deforming the same shape, so we can
-    % save the results and skip all the computation in later runs.
     
     % Define bounding box
     vertices = [-0.05 -1.25 -0.85;  0.65 -1.25 -0.85;  0.65 0.30 -0.85;  -0.05 0.30 -0.85; 
@@ -77,8 +47,49 @@ if ~precomputed
     % assume that the control points are on a unit lattice
     minMeshPoint = min(meshPoints);
     maxMeshPoint = max(meshPoints);
-    
     meshPoints = (meshPoints - repmat(minMeshPoint,size(meshPoints,1),1))./(maxMeshPoint-minMeshPoint);
+    
+    
+    % Direction of each active control point in each dimension
+    nDimX = 3; nDimY = 3; nDimZ = 3;
+    
+    x = zeros([nDimY,nDimZ,nDimX]);
+    xfrontWeights = [0,  -1,  -1
+                     0,   0,  -1
+                     0,  -1,  -1];
+    x(:,:,1) = fliplr(xfrontWeights);
+    x(:,:,2) = fliplr(xfrontWeights);
+    y = x;
+    y(:,:,3) = fliplr(xfrontWeights);
+    z = y;
+    
+    allDefs = cat(4,x,y,z);
+    
+    % Indexes of active dimensions
+    % HINT: ffdDofROW contains the vectorized IDs of all active DoFs and can be
+    %       used to populate defValKey in the next step
+    [ffdDofROW,~,ffdDof] = find(allDefs(:)~=0);    
+    
+    % Map the _parameters_ to the _degrees of freedom_ (3 per control point)
+    % Without constraints (like symmetry), it is just a 1:1 mapping
+    % HINT: use ffdDofROW to see what DoFs are actually used
+    % HINT: 1:1 mapping:      defValKey = 1:length(deformVals);
+
+    %defValKey = [1 28 55, ]
+    % HINT: you can also use the following visualization to see what DoF is
+    % where
+    IDs = 1:length(allDefs(:));
+    controlPtsX = 0:1/(nDimX-1):1;controlPtsY = 0:1/(nDimY-1):1;controlPtsZ = 0:1/(nDimZ-1):1;
+    controlPts = combvec(controlPtsX,controlPtsY,controlPtsZ);
+    figure(99);hold off;scatter3(controlPts(1,:),controlPts(2,:),controlPts(3,:),128,'filled');hold on;
+    scatter3(meshPoints(:,1),meshPoints(:,2),meshPoints(:,3),16,'r');
+    for w=1:length(allDefs(:))
+        i = mod(w,27);if i == 0; i = 27;end;
+        text(controlPts(1,i)+0.05*round(1+w/27),controlPts(2,i),controlPts(3,i),[string(IDs(w)) ':' string(allDefs(w))]);
+    end
+    %% Compute Bernstein polynomials
+    % These won't change if we keep deforming the same shape, so we can
+    % save the results and skip all the computation in later runs.
     
     % Preallocate
     bernstein_x = zeros(nDimX,nMeshPoints);

@@ -1,25 +1,25 @@
 function d = mirror_Domain(varargin)
-%velo_Domain - Velomobile Domain Parameters 
-% Returns struct with default for all settings of velomobile domain
+%mirror_Domain - mirror Domain Parameters 
+% Returns struct with default for all settings of a car mirror domain
 % including hyperparameters, and strings indicating functions for
 % representation and evaluation. Direct parameter or free form deformation
 % encodings can be chosen.
 %
-% Syntax:  d = velo_Domain('encoding',ENCODING,'nCases',NCASES);
+% Syntax:  d = mirror_Domain('encoding',ENCODING,'nCases',NCASES);
 %
 % Example: 
-%    d = velo_Domain('encoding','ffd'  ,'nCases',10)
+%    d = mirror_Domain('encoding','ffd'  ,'nCases',10)
 %    output = sail(sail,d);
-%    d = velo_Domain('encoding','param','nCases',2)
+%    d = mirror_Domain('encoding','param','nCases',2)
 %    output = sail(sail,d);
 %
 %
 % See also: sail, runSail
 
-% Author: Adam Gaier
+% Author: Adam Gaier, Alexander Hagg
 % Bonn-Rhein-Sieg University of Applied Sciences (BRSU)
-% email: adam.gaier@h-brs.de
-% Oct 2017; Last revision: 02-Oct-2017
+% email: adam.gaier@h-brs.de, alexander.hagg@h-brs.de
+% Dec 2017; Last revision: 11-Dec-2017
 %------------- Input Parsing ------------
 parse = inputParser;
 parse.addOptional('encoding', 'ffd');
@@ -30,34 +30,25 @@ encoding = parse.Results.encoding;
 nCases   = parse.Results.nCases;
 %------------- BEGIN CODE --------------
 
-d.name = ['velo_' encoding];
+d.name = ['mirror_' encoding];
 rmpath( genpath('domains'));
-addpath(genpath('domains/velo/'));
+addpath(genpath('domains/mirror/'));
 
 % - Scripts 
 % Common to any representations
-d.preciseEvaluate   = 'velo_PreciseEvaluate';    %
-d.categorize        = 'velo_Categorize';         %
-d.createAcqFunction = 'velo_CreateAcqFunc';      %
+d.preciseEvaluate   = 'mirror_PreciseEvaluate';    %
+d.categorize        = 'mirror_Categorize';         %
+d.createAcqFunction = 'mirror_CreateAcqFunc';      %
 d.validate          = [d.name '_Validate'];
 
 % - Genotype to Phenotype Expression
 % Any representation should produce a fv struct and NX3 meshpoints
-d.dof = 16;
+d.dof = 70;
 base = 0.5+zeros(1,d.dof);
 switch encoding
     case 'ffd'
-        [~, ~, d.FfdP] =  velo_ffd_Express(base,'veloBase.stl');
-        d.express  = @(x) velo_ffd_Express(x, d.FfdP);
-        d.varCoef  = 1e0; % variance weight
-        
-    case 'param'
-        load('paramPtIndx.mat','LOCB','slimF');
-        d.repParams.LOCB    = LOCB; d.repParams.slimF   = slimF;
-        load('patchTE.mat','vTE','fTE');
-        d.repParams.vTE     = vTE;  d.repParams.fTE     = fTE;
-        
-        d.express  = @(x) batchExpressVelo(x, d.repParams);
+        [~, ~, d.FfdP] =  mirror_ffd_Express(base,'mirrorBase.stl');
+        d.express  = @(x) mirror_ffd_Express(x, d.FfdP);
         d.varCoef  = 1e0; % variance weight
     otherwise
         warning('No valid encoding defined');
@@ -67,7 +58,7 @@ d.base.mesh = d.base.fv.vertices;
 
 % - Alternative initialization [ TODO ]
 d.loadInitialSamples = false;
-d.initialSampleSource= '#notallFfdvelos.mat';
+d.initialSampleSource= '#notallFfdmirrors.mat';
 
 % - Feature Space
 % Map borders
@@ -83,8 +74,7 @@ d.featureMax = [0.65  4.0];
 
 %   Curvature Calculation (stl specific
 [d.curvSecIds.xz,d.curvSecIds.yz,d.curvSecIds.yx] = getCurvatureIds(...
-    d.base.mesh, [10 16 22], [1 17 18], [36 16 4], 'doPlot',false);
-
+    d.base.mesh, [10 16 22], [1 17 18], [36 16 4], 'doPlot',true);
 
 % - GP Models
 d.gpParams(1)= paramsGP(d.dof); % Drag Force
@@ -105,7 +95,7 @@ d.nVals = 1; % # of values of interest, e.g. dragForce (1), or cD and cL (2)
 
 % Cluster
 % % Cases are executed and stored here (cases are started elsewhere)
- d.openFoamFolder = ['/scratch/agaier2m/sailCFD/']; 
+ d.openFoamFolder = ['/scratch/ahagg2s/sailCFD/']; 
 % - There should be a folder called 'case1, case2, ..., caseN in this
 % folder, where N is the number of new samples added every iteration.
 % - Each folder has a shell script called 'caserunner.sh' which must be
