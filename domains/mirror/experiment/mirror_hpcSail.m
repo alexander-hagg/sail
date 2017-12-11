@@ -1,5 +1,5 @@
 function mirror_hpcSail(encoding, nCases, startCase)
-% Runs SAIL velomobile optimization on cluster - [RUN THROUGH QSUB]
+% Runs SAIL mirror optimization on cluster - [RUN THROUGH QSUB]
 %
 % Syntax:  [output1,output2] = function_name(input1,input2,input3)
 %
@@ -47,12 +47,12 @@ for iRun = 1:nRuns
      p.data.predMapRes   = [25 25];  
 	 
 % Domain hyperparameters 
-d = velo_Domain('encoding',encoding,'nCases',nCases);
+d = mirror_Domain('encoding',encoding,'nCases',nCases);
 d.featureRes = [25 25];
 d.caseStart = startCase;
 
 % Use Dummy Evaluation 
-d.preciseEvaluate = 'velo_DummyPreciseEvaluate';
+d.preciseEvaluate = 'mirror_DummyPreciseEvaluate';
  
 %% Run SAIL
 runTime = tic;

@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -N SAIL_VeloParam
+#PBS -N SAIL_MirrorParam
 #PBS -q default
 #PBS -l nodes=1:ppn=12
 #PBS -l walltime=48:00:00
@@ -18,6 +18,6 @@ module load java/default
 module load cuda/default
 
 # Run experiment
-cd $PBS_O_HOME/Code/ffdSail/domains/velo/experiment/
-matlab -nodisplay -nosplash -nodesktop -r "velo_hpcSail_param"
-#matlab -nodisplay -nosplash -nodesktop -r "velo_hpcSail($encoding, $nCases)"
+cd $PBS_O_HOME/Code/ffdSail/domains/mirror/experiment/
+matlab -nodisplay -nosplash -nodesktop -r "mirror_hpcSail_param"
+#matlab -nodisplay -nosplash -nodesktop -r "mirror_hpcSail($encoding, $nCases)"
