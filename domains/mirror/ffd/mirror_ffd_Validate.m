@@ -1,9 +1,9 @@
 function validInds = mirror_ffd_Validate(children,~)  
-%velo_FFD_ValidateChildren - Ensures all velomobile shapes are valid
+%mirror_FFD_ValidateChildren - Ensures all mirror shapes are valid
 % All shapes produced through deformations are considered valid -- this
 % file is simply a placeholder.
 %
-% Syntax:  validInds = velo_FFD_ValidateChildren(newChildren,d);
+% Syntax:  validInds = mirror_FFD_ValidateChildren(newChildren,d);
 %
 %
 % Inputs:
