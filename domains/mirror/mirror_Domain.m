@@ -28,7 +28,7 @@ parse.addOptional('nCases'  , 1);
 parse.parse(varargin{:});
 encoding = parse.Results.encoding;
 nCases   = parse.Results.nCases;
-%------------- BEGIN CODE --------------
+%%------------- BEGIN CODE --------------
 
 d.name = ['mirror_' encoding];
 rmpath( genpath('domains'));
@@ -64,17 +64,22 @@ d.initialSampleSource= '#notallFfdmirrors.mat';
 % Map borders
 d.featureRes = [16 16];
 d.nDims      = length(d.featureRes);
-d.featureLabels = {'Volume', 'Curvature'}; % {X label, Y label}
+d.featureLabels = {'TotalCurvature', 'RelativeLength', 'MirrorSurface'};
 d.extraMapValues = {'dragForce','confidence'};
 
-% Domain Specific
+%% Features (domain specific)
 %   Feature Borders
-d.featureMin = [0.25  2.5];
-d.featureMax = [0.65  4.0];
+d.featureMin = [2.5 0.25 0.0];
+d.featureMax = [4.0 0.65 1.0];
 
-%   Curvature Calculation (stl specific
-[d.curvSecIds.xz,d.curvSecIds.yz,d.curvSecIds.yx] = getCurvatureIds(...
-    d.base.mesh, [10 16 22], [1 17 18], [36 16 4], 'doPlot',true);
+% IDs of changeable vertices of base mesh
+load('baseSubMeshIds.mat');d.features.subMeshIds = baseSubMeshIds;clear baseSubMeshIds;
+% Vertice IDs of lines on which curvature is measured
+load('verticeIDs.mat');d.features.curvature.ids = verticeIDs;clear verticeIDs;
+% Reflective Surface
+load('mirrorIDs.mat');d.features.mirror.ids = mirrorIDs;clear mirrorIDs;
+
+%%
 
 % - GP Models
 d.gpParams(1)= paramsGP(d.dof); % Drag Force

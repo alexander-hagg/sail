@@ -26,8 +26,12 @@ veloFV = d.express(samples);
 
 parfor i=1:size(samples,1)
     if any(isnan(veloFV(i).vertices(:))); error(['Can''t categorize NaN.']); end
-    feature1(i) = patchVolume(veloFV(i));
-    feature2(i) = getTotalCurvature(veloFV(i).vertices,d.curvSecIds);    
+    % FEATURE Curvature
+    feature1(i) = getTotalCurvature(veloFV(i).vertices,d.verticeIDs);    
+    % FEATURE RelativeLength
+    %feature2(i) = getTotalCurvature(veloFV(i).vertices,d.verticeIDs);    
+    % FEATURE MirrorSurface
+    %feature3(i) = getTotalCurvature(veloFV(i).vertices,d.verticeIDs);    
 end
 feature = [feature1(:) feature2(:)];
 

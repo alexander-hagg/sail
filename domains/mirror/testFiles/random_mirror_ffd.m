@@ -53,29 +53,6 @@ for shapeID=1:numShapes
     view(-270,30);
     grid on;
     axis equal;
-    % subplot(3,3,7);hold off;
-    % plot(FV{shapeID}.vertices(1,:),FV{shapeID}.vertices(2,:),'x');
-    % hold on;
-    % scatter(controlPts(1,:),controlPts(2,:),'filled');
-    % axis equal;
-    % grid on;
-    % xlabel('x');ylabel('y');
-    %
-    % subplot(3,3,8);hold off;
-    % plot(FV{shapeID}.vertices(1,:),FV{shapeID}.vertices(3,:),'x');
-    % hold on;
-    % scatter(controlPts(1,:),controlPts(3,:),'filled');
-    % xlabel('x');ylabel('z');
-    % grid on;
-    % axis equal;
-    %
-    % subplot(3,3,9);hold off;
-    % plot(FV{shapeID}.vertices(2,:),FV{shapeID}.vertices(3,:),'x');
-    % hold on;
-    % scatter(controlPts(2,:),controlPts(3,:),'filled');
-    % xlabel('y');ylabel('z');
-    % grid on;
-    % axis equal;
     drawnow;
     
 end

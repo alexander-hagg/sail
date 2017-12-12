@@ -28,8 +28,7 @@ if ~precomputed
     STLMeshpoints = STLMeshpoints';
     
     % Define bounding box
-    vertices = [-0.05 -1.25 -0.85;  0.65 -1.25 -0.85;  0.65 0.30 -0.85;  -0.05 0.30 -0.85; 
-                -0.05 -1.25  0.85;  0.65 -1.25  0.85;  0.65 0.30  0.85;  -0.05 0.30  0.85];
+    maxY = 0.2;
             
     % Rotate mesh to align with bounding box
     theta           = atan((0.88-0.45)/1.28);
@@ -37,11 +36,9 @@ if ~precomputed
     STLMeshpoints   = STLMeshpoints * rotMat;
     
     % Select mesh points within bounding box
-    submesh =   STLMeshpoints(:,1) > min(vertices(:,1)) & STLMeshpoints(:,1) < max(vertices(:,1)) & ...
-                STLMeshpoints(:,2) > min(vertices(:,2)) & STLMeshpoints(:,2) < max(vertices(:,2)) & ...
-                STLMeshpoints(:,3) > min(vertices(:,3)) & STLMeshpoints(:,3) < max(vertices(:,3));
-    meshPoints = STLMeshpoints(submesh,:);
-    nMeshPoints = size(meshPoints,1);  
+    submesh         = STLMeshpoints(:,2) < maxY;
+    meshPoints      = STLMeshpoints(submesh,:);
+    nMeshPoints     = size(meshPoints,1);  
     
     % Translate and rescale bounding box to "unit bounding box", because we
     % assume that the control points are on a unit lattice
