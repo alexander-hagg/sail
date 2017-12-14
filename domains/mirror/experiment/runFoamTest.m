@@ -34,7 +34,7 @@ cd ~/sail;
 d = mirror_Domain('nCases',1);
 
 % Use Dummy Evaluation 
-d.preciseEvaluate = 'mirror_DummyPreciseEvaluate';
+%d.preciseEvaluate = 'mirror_DummyPreciseEvaluate';
 
 % Get base and random shape
 observations(1,:) = 0.5+0.0*rand(1,41);
