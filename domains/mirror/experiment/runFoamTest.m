@@ -31,7 +31,7 @@ cd ~/sail;
 
 %% Generate shape and run OpenFOAM
 % Get domain
-d = mirror_Domain('nCases',1);
+d = mirror_Domain('nCases',2);
 
 % Use Dummy Evaluation 
 %d.preciseEvaluate = 'mirror_DummyPreciseEvaluate';
