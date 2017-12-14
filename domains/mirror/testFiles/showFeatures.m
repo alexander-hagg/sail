@@ -35,4 +35,4 @@ axis([700 1100 -1100 -700 600 800]);
 end
 
 
-save_figures(fig, './', ['feature_visualization_'], 12, [16 10]);
+%save_figures(fig, './', ['feature_visualization_'], 12, [16 10]);

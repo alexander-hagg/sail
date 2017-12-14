@@ -77,7 +77,7 @@ end
 asciiMode = strcmp( options.mode ,'ascii');
 
 % Create the facets
-facets = single(vertices');
+facets = single(vertices);
 facets = reshape(facets(:,faces'), 3, 3, []);
 
 % Compute their normals

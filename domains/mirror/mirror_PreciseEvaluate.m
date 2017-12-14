@@ -4,7 +4,7 @@ function [value] = mirror_PreciseEvaluate(nextObservations, d)
 % Syntax:  [observation, value] = af_InitialSamples(p)
 %
 % Inputs:
-%    nextObservations - [NX1] of FV structs - Samples to evaluate
+%    nextObservations - [NX1] of parameter vectors
 %    d                - domain description struct
 %     .openFoamFolder 
 %
@@ -37,7 +37,7 @@ for iRound=0:nRounds-1
             openFoamFolder = [folderBaseName 'case' int2str(iCase+caseStart-1) '/']
             PEValue(iCase) = mirror_OpenFoamResult(...
                d.express(nextObservations(obsIndx,:)),...
-               [openFoamFolder 'constant/triSurface/parsecWing.stl'],...
+               [openFoamFolder 'constant/triSurface/part_07_Mirror.stl'],...
                openFoamFolder);
         end
     end  

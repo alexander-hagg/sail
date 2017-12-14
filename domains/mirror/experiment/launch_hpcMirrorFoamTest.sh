@@ -6,7 +6,7 @@
  destFolderName="/scratch/ahagg2s/sailCFD/"
 
 # HPC1 with 12 Cores (1 job per node)
-baseFolderName="/home/ahagg2s/sail/domains/mirror/pe/ofTemplates/hpc/"
+baseFolderName="/home/ahagg2s/sail/domains/mirror/pe/ofTemplates/hpc1/"
 for (( i=1; i<=$nHpc1Cases; i++ ))
 do
 	caseName=$destFolderName"case$i"
@@ -16,7 +16,7 @@ do
 done 
 
 # HPC2 with 12 Cores (2 jobs per node)
-baseFolderName="/home/ahagg2s/sail/domains/mirror/pe/ofTemplates/hpc/"
+baseFolderName="/home/ahagg2s/sail/domains/mirror/pe/ofTemplates/hpc2/"
 for (( i=nHpc1Cases+1; i<=$nHpc1Cases+$nHpc2Cases; i++ ))
 do
 	caseName=$destFolderName"case$i"
@@ -27,6 +27,5 @@ done
 
 # Launch SAIL
 cases=$(($nHpc1Cases + $nHpc2Cases))
-echo 'SAIL Main Script'
-qsub -N SAIL_FFD -v encoding=\'ffd\',nCases=10,startCase=1 sb_hpcMirror.sh
-qsub -N SAIL_PARAM -v encoding=\'param\',nCases=10,startCase=11 sb_hpcMirror.sh
+echo 'Mirror Test Main Script'
+qsub -N FOAM_TEST-mirror -v encoding=\'ffd\',nCases=2,startCase=1 sb_hpcMirrorFoamTest.sh

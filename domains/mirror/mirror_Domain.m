@@ -29,8 +29,8 @@ parse.parse(varargin{:});
 encoding = parse.Results.encoding;
 nCases   = parse.Results.nCases;
 %%------------- BEGIN CODE --------------
-
-d.name = ['mirror_' encoding];
+d.namebase = 'mirror';
+d.name = [d.namebase '_' encoding];
 rmpath( genpath('domains'));
 addpath(genpath('domains/mirror/'));
 
