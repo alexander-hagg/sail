@@ -28,4 +28,4 @@ done
 # Launch SAIL
 cases=$(($nHpc1Cases + $nHpc2Cases))
 echo 'Mirror Test Main Script'
-qsub -N FOAM_TEST-mirror -v encoding=\'ffd\',nCases=2,startCase=1 sb_hpcMirrorFoamTest.sh
+qsub -N FOAM_TEST-mirror -v encoding=\'ffd\',nCases=2,startCase=1 /home/ahagg2s/sail/domains/mirror/experiment/sb_hpcMirrorFoamTest.sh

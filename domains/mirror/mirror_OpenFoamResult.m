@@ -1,4 +1,4 @@
-function dragF = mirror_OpenFoamResult(x, stlFileName,openFoamFolder)
+function dragF = mirror_OpenFoamResult(x, stlFileName, openFoamFolder)
 %mirror_openFoamResult - Evaluates a single shape in OpenFOAM
 %
 % Syntax:  [observation, value] = af_InitialSamples(p)
@@ -19,6 +19,7 @@ function dragF = mirror_OpenFoamResult(x, stlFileName,openFoamFolder)
 
 %------------- BEGIN CODE --------------
 dragF = nan;
+tTimeout = 30000;
 
 % Create STL
 stlwrite(stlFileName, x);
@@ -32,7 +33,7 @@ tic;
 while ~exist([openFoamFolder 'mesh.timing'] ,'file')
     display(['Waiting for Meshing: ' seconds2human(toc)]);
     pause(10);
-    if (toc > 300); dragF = nan; return; end;
+    if (toc > tTimeout); dragF = nan; return; end;
 end
 display(['|----| Meshing done in ' seconds2human(toc)]);
 
@@ -40,7 +41,7 @@ tic;
 while ~exist([openFoamFolder 'all.timing'] ,'file')
     display(['Waiting for CFD: ' seconds2human(toc)]);
     pause(10);
-    if (toc > 300); dragF = nan; return; end;
+    if (toc > tTimeout); dragF = nan; return; end;
 end
 display(['|----| CFD done in ' seconds2human(toc)]);
 

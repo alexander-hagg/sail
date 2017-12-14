@@ -28,5 +28,4 @@ done
 # Launch SAIL
 cases=$(($nHpc1Cases + $nHpc2Cases))
 echo 'SAIL Main Script'
-qsub -N SAIL_FFD -v encoding=\'ffd\',nCases=10,startCase=1 sb_hpcMirror.sh
-qsub -N SAIL_PARAM -v encoding=\'param\',nCases=10,startCase=11 sb_hpcMirror.sh
+qsub -N SAIL_FFD_MIRROR -v encoding=\'ffd\',nCases=10,startCase=1 sb_hpcMirror.sh
