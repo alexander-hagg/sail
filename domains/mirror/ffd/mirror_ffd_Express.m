@@ -47,7 +47,7 @@ if ~precomputed
     size(meshPoints)
     size(repmat(minMeshPoint,size(meshPoints,1),1))
     size((maxMeshPoint-minMeshPoint))
-    meshPoints = (meshPoints - repmat(minMeshPoint,size(meshPoints,1),1))./(maxMeshPoint-minMeshPoint);
+    meshPoints = (meshPoints - repmat(minMeshPoint,size(meshPoints,1),1))./repmat((maxMeshPoint-minMeshPoint),size(meshPoints,1),1);
     
     % Direction of each active control point in each dimension
     nDimX = 3; nDimY = 3; nDimZ = 3;
