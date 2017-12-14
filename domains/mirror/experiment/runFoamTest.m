@@ -18,9 +18,12 @@ addpath(genpath(currentPath(1:end-length(mfilename))));
 
 
 %% Generate shape and run OpenFOAM
-
 % Get domain
 d = mirror_Domain('nCases',1);
+
+% Use Dummy Evaluation 
+d.preciseEvaluate = 'mirror_DummyPreciseEvaluate';
+
 % Get base and random shape
 observations(1,:) = 0.5+0.0*rand(1,41);
 observations(2,:) = 0.45+0.1*rand(1,41);
