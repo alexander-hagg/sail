@@ -44,6 +44,7 @@ templatePathPrefix = 'domains/mirror/pe/ofTemplates/';
 templatePathPostfix = '/constant/triSurface/';
 fsNodes = dir(templatePathPrefix); fsNodes(~[fsNodes.isdir]) = []; fsNodes(1:2) = [];
 for templateID=1:length(fsNodes)
+    disp(fsNodes(templateID))
     stlFilePath = [fsNodes(templateID).folder '/' fsNodes(templateID).name templatePathPostfix];
     for stlFileID = 1:length(STLfileNames)
         fileName = [stlFilePath STLfileNames{stlFileID}];

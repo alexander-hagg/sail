@@ -25,9 +25,8 @@ myCluster.JobStorageLocation  = tmpdir;
 myCluster.HasSharedFilesystem = true;
 
 %% Add all files to path
-addpath(genpath('~/Code/ffdSail/'));
-addpath(genpath('~/Code/matlabExtensions/'));
-cd ~/Code/ffdSail
+addpath(genpath('~/sail/'));
+cd ~/sail;
 
 nRuns = 2;
 for iRun = 1:nRuns
