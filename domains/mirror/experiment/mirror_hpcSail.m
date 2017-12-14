@@ -14,6 +14,7 @@ disp([encoding nCases startCase]);
 
 %% Parallelization Settings
 %parpool(12);
+
 % Ensure Randomness of Randomness
 RandStream.setGlobalStream(RandStream('mt19937ar','Seed','shuffle'));
 

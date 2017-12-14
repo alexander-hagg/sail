@@ -16,6 +16,18 @@ clear;
 currentPath = mfilename('fullpath');
 addpath(genpath(currentPath(1:end-length(mfilename))));
 
+% Ensure Randomness of Randomness
+RandStream.setGlobalStream(RandStream('mt19937ar','Seed','shuffle'));
+
+% Create Temp Directory for Multithreading
+tmpdir = getenv('TMPDIR');
+if isempty(tmpdir);tmpdir='/tmp';end
+myCluster.JobStorageLocation  = tmpdir;
+myCluster.HasSharedFilesystem = true;
+
+%% Add all files to path
+addpath(genpath('~/sail/'));
+cd ~/sail;
 
 %% Generate shape and run OpenFOAM
 % Get domain
