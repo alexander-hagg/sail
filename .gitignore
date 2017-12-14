@@ -1,3 +1,6 @@
+# STL files in mirror domain (too large for Github)
+part*.stl
+
 # Matlab junk files #
 ###################
 *.m~

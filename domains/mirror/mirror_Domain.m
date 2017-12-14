@@ -16,23 +16,42 @@ function d = mirror_Domain(varargin)
 %
 % See also: sail, runSail
 
-% Author: Adam Gaier, Alexander Hagg
+% Author: Alexander Hagg
 % Bonn-Rhein-Sieg University of Applied Sciences (BRSU)
-% email: adam.gaier@h-brs.de, alexander.hagg@h-brs.de
+% email: alexander.hagg@h-brs.de
 % Dec 2017; Last revision: 11-Dec-2017
 %------------- Input Parsing ------------
 parse = inputParser;
 parse.addOptional('encoding', 'ffd');
 parse.addOptional('nCases'  , 1);
+parse.addOptional('stlfolder','/scratch/ahagg2s/sailCFD/triSurface');
 
 parse.parse(varargin{:});
 encoding = parse.Results.encoding;
 nCases   = parse.Results.nCases;
+STLfolder = parse.Results.stlfolder;
+
 %%------------- BEGIN CODE --------------
 d.namebase = 'mirror';
 d.name = [d.namebase '_' encoding];
 rmpath( genpath('domains'));
 addpath(genpath('domains/mirror/'));
+
+% Copy STL files into template folder 
+% (https://www.aer.mw.tum.de/en/research-groups/automotive/drivaer/download/)
+STLfileNames = {'part_03_Estate.stl','part_07_Mirror_Cover.stl','part_01_Body_Closed_2.stl','part_07_Mirror.stl'};
+templatePathPrefix = 'domains/mirror/pe/ofTemplates/';
+templatePathPostfix = '/constant/triSurface/';
+fsNodes = dir(templatePathPrefix); fsNodes(~[fsNodes.isdir]) = []; fsNodes(1:2) = [];
+for templateID=1:length(fsNodes)
+    stlFilePath = [fsNodes(templateID).folder '/' fsNodes(templateID).name templatePathPostfix];
+    for stlFileID = 1:length(STLfileNames)
+        fileName = [stlFilePath STLfileNames{stlFileID}];
+        if ~exist(fileName,'file')
+            system(['cp ' STLfolder '/' STLfileNames{stlFileID} ' ' fileName]);
+        end
+    end
+end
 
 % - Scripts 
 % Common to any representations
@@ -100,7 +119,7 @@ d.nVals = 1; % # of values of interest, e.g. dragForce (1), or cD and cL (2)
 
 % Cluster
 % % Cases are executed and stored here (cases are started elsewhere)
- d.openFoamFolder = ['/scratch/ahagg2s/sailCFD/']; 
+d.openFoamFolder = ['/scratch/ahagg2s/sailCFD/']; 
 % - There should be a folder called 'case1, case2, ..., caseN in this
 % folder, where N is the number of new samples added every iteration.
 % - Each folder has a shell script called 'caserunner.sh' which must be
