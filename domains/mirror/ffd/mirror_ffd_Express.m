@@ -44,6 +44,9 @@ if ~precomputed
     % assume that the control points are on a unit lattice
     minMeshPoint = min(meshPoints);
     maxMeshPoint = max(meshPoints);
+    size(meshPoints)
+    size(repmat(minMeshPoint,size(meshPoints,1),1))
+    size((maxMeshPoint-minMeshPoint))
     meshPoints = (meshPoints - repmat(minMeshPoint,size(meshPoints,1),1))./(maxMeshPoint-minMeshPoint);
     
     % Direction of each active control point in each dimension

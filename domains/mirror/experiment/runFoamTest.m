@@ -46,6 +46,6 @@ runTime = tic;
 disp(['Runtime: ' seconds2human(toc(runTime))]);
 
 % Save results
-save(['foamTest.mat'],'observations', 'values','p','d');
+save(['foamTest.mat'],'observations', 'values','d');
 
 
