@@ -1,4 +1,4 @@
-function dragF = mirror_OpenFoamResult(x, stlFileName, openFoamFolder)
+function dragF = mirror_OpenFoamResult(x, stlFileName, openFoamFolder, maxDragForce)
 %mirror_openFoamResult - Evaluates a single shape in OpenFOAM
 %
 % Syntax:  [observation, value] = af_InitialSamples(p)
@@ -49,7 +49,7 @@ if exist(resultOutputFile, 'file')
     display(resultOutputFile);
     raw = importdata(resultOutputFile);
     dragF = eval(raw{end}(16:27));
-    if dragF > 30 % Sanity check to prevent model destruction
+    if dragF > maxDragForce % Sanity check to prevent model destruction
         disp(['|-------> Drag Force calculated as ' num2str(dragF) ' (returning NaN)']);
         dragF = nan; 
         save([openFoamFolder  'error' int2str(randi(1000,1)) '.mat'], 'x');

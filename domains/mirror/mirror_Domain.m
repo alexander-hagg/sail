@@ -104,7 +104,7 @@ load('mirrorIDs.mat');d.features.mirror.ids = mirrorIDs;clear mirrorIDs;
 d.gpParams(1)= paramsGP(d.dof); % Drag Force
 
 % Acquisition function
-d.muCoef  = 1;   % mean weight 
+d.muCoef  = 1;                  % mean weight 
 
 % - Visualization
 color8 = parula(8);
@@ -115,9 +115,12 @@ d.view = @(x) patch('Faces',x.faces,'Vertices',x.vertices,...
 if nargin < 1; nCases = 10; end
 d.caseStart = 1;
 d.nCases = nCases;
-d.nVals = 1; % # of values of interest, e.g. dragForce (1), or cD and cL (2)
+d.nVals = 1;                    % # of values of interest, e.g. dragForce (1), or cD and cL (2)
 
-% Cluster
+d.maxDragForce = 1000;          % Only use this to prevent really bad shapes to influence the surrogate model
+
+
+%% Cluster
 % % Cases are executed and stored here (cases are started elsewhere)
 d.openFoamFolder = ['/scratch/ahagg2s/sailCFD/']; 
 % - There should be a folder called 'case1, case2, ..., caseN in this
