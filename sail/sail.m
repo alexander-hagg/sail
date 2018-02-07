@@ -56,7 +56,7 @@ end
 nSamples = size(observation,1);
 
 %% Acquisition Loop
-trainingTime = []; illumTime = []; peTime = []; predMap = [];
+trainingTime = []; illumTime = []; peTime = [];
 while nSamples <= p.nTotalSamples
     %% 1 - Create Surrogate and Acquisition Function
     % Surrogate models are created from all evaluated samples, and these
